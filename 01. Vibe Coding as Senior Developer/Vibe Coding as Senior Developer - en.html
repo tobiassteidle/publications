@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Coding as a Senior Developer: A Personal Experience (Part 1)</title>
+</head>
+<body>
+<article>
+    <h1>Vibe Coding as a Senior Developer: A Personal Experience (Part 1)</h1>
+
+    <h2>Introduction</h2>
+    <p>Originally, I planned to write a complete experience report after the development was finished.</p>
+    <p>But early on, it became clear that the journey was too exciting, too educational, and too dynamic to document only in hindsight.</p>
+    <p>Therefore, I decided to write a kind of diary or article series — iteratively, just like the development itself is unfolding.</p>
+    <p>The project is complex, and even with AI support, it will span over a longer period. Perhaps, in the end, this will also result in a concise "Lessons Learned" article.</p>
+
+    <h2>Project Idea & Vision</h2>
+    <p>The application I’m developing with Claude Code is aimed at corporate clients who want to retrieve stored event materials (e.g., furniture, banners, equipment) for events such as trade fairs or conferences.</p>
+    <p>Through the web application, customers can:</p>
+    <ul>
+        <li>Log in</li>
+        <li>Select materials from a client-specific inventory</li>
+        <li>Specify event time and location</li>
+        <li>Submit a shipping job for processing</li>
+    </ul>
+    <p>The shipping will then be organized by the provider, with inventory being synchronized regularly — however, this part is not included in the MVP.</p>
+
+    <h2>Technology Stack & Architecture</h2>
+    <p>The chosen technologies align with a modern, containerized setup:</p>
+    <ul>
+        <li>Frontend: Angular (SPA), delivered in the container</li>
+        <li>Backend: Spring Boot as BFF</li>
+        <li>Auth: Keycloak, OAuth2-based, integrated via the backend</li>
+        <li>Database: PostgreSQL</li>
+        <li>Deployment: Docker, Frontend + BFF in the same container</li>
+    </ul>
+    <p><strong>Security-Relevant:</strong></p>
+    <p>The web application is publicly accessible — however, the customer’s warehouse management software is only locally reachable. Synchronization happens indirectly.</p>
+
+    <h2>First Experiences with Claude Code</h2>
+    <p>The first steps were promising:</p>
+    <ul>
+        <li>The basic structure of frontend & backend was neatly generated</li>
+        <li>Docker support and mock data were automatically created</li>
+        <li>A prototype with a working UI was created in a very short time</li>
+    </ul>
+    <p>But: The more specific the requirements became, the more frequently Claude Code stumbled.</p>
+    <p>Examples:</p>
+    <ul>
+        <li>Changes to the appearance broke the working navigation</li>
+        <li>The authentication flow (OAuth2) was never correctly implemented</li>
+        <li>Problems that were already solved reappeared in later iterations</li>
+        <li>Security-critical concepts such as token handling were violated</li>
+    </ul>
+
+    <h2>Emotional Rollercoaster</h2>
+    <p>What began with excitement turned into a source of frustration in the meantime:</p>
+    <p>“Claude changed things I never mentioned — and forgot things that already worked."</p>
+    <p><strong>Early Phase:</strong> Motivation, visibility, visible progress</p>
+    <p><strong>Middle Phase:</strong> Recurring bugs, tough iterations, manual intervention</p>
+    <p><strong>Late Phase:</strong> Review requirement, growing skepticism — but also respect for the performance</p>
+    <p>Still, one thing remains: Working with Claude Code is fascinating. But it requires a different mindset than traditional development.</p>
+
+    <h2>Security Aspects in Focus</h2>
+    <p>The most severe issues occurred with security — an area where Claude Code definitely should not be left on its own at this stage. Here are some of the most serious weaknesses encountered during the project:</p>
+
+    <h3>🔒 Token Handling in the Frontend</h3>
+    <p>Claude suggested storing the access token in the local Angular frontend and manually passing it in every API call:</p>
+    <pre>
+            const headers = new HttpHeaders({
+              Authorization: 'Bearer ' + localStorage.getItem('access_token')
+            });
+        </pre>
+    <p>➡️ A clear violation of best practices — tokens should be stored in secure HttpOnly cookies and never in the frontend.</p>
+
+    <h3>🧠 Incorrect Authentication Flow</h3>
+    <p>Instead of correctly implementing the OAuth2 Authorization Code Flow, the auth_code was passed directly to the frontend and processed there:</p>
+    <pre>
+            const code = this.route.snapshot.queryParams['code'];
+        </pre>
+    <p>➡️ Highly insecure: The auth code must be received by the backend and exchanged for a token.</p>
+
+    <h3>🛑 Missing Tenant Protection</h3>
+    <p>Example from the generated code:</p>
+    <pre>
+            @GetMapping("/material")
+            public List<Material> getAll() {
+                return materialRepository.findAll();
+            }
+        </pre>
+    <p>➡️ Every user got all materials — without checking which client they belonged to. A severe architectural flaw.</p>
+
+    <h3>🚨 Vulnerable Dependencies</h3>
+    <p>Claude Code integrated Keycloak adapters with known CVEs in multiple iterations — without any notice or update.</p>
+    <p>➡️ An automatic CVE check or security scanner was not included.</p>
+
+    <h3>🧱 Missing Central Security Configuration</h3>
+    <p>Instead of a consistent Spring Security configuration, API endpoints were secured individually — others remained open.</p>
+    <p>➡️ A wrong annotation — and an entire area was publicly available.</p>
+    <p>"I would never deploy an AI-generated project without a security review — and no one should."</p>
+
+    <h2>Current Status</h2>
+    <p>After the initial €25 spent on Claude Code credits, a working prototype of the frontend was created.
+        The login via the backend with Keycloak also works — but still requires a clear security review.
+        Functional business logic has not yet been implemented — but the technical framework is in place, and the project has a solid foundation.</p>
+
+    <h2>Personal Conclusion</h2>
+    <p>Currently, there are numerous reports on the internet about so-called “Vibe Coding,” where AI is celebrated as a game-changer.</p>
+    <p>Often accompanied by the question: Do we even need software developers in the future?</p>
+    <p><strong>My short answer:</strong> Sort of.
+        Yes, it is now indeed possible to build working applications without deep programming knowledge.
+        But: Developers — especially experienced ones — are more necessary than ever.</p>
+    <p><strong>The long answer:</strong>
+        Working with coding agents reminds me of Schmendrick the Magician from *The Last Unicorn*.
+        They work best when you give them as much freedom as possible. I quote:
+        “Magic — do what you will!"
+        Then the results are sometimes impressive, fast, and surprisingly effective.
+        But as soon as the requirements become specific and complex, the magic runs into its limits:
+        The agents need close control.
+        Reviews become mandatory.
+        And it’s often faster to write code directly than to describe the requirements in such precision that an agent understands them correctly.</p>
+
+    <p>However, the prerequisite is that you can actually recognize where the problems occur.
+        An amateur often doesn’t.
+        I only changed code manually when the agent was stuck in an endless loop.
+        And even now, the code still contains numerous open issues — without tests, with messy patterns, and unclear responsibilities.
+        Would you trust such a system with your credit card details?</p>
+
+    <h2>Role of the Developer</h2>
+    <p>Many underestimate how little our job has to do with just coding.
+        Architecture, communication, security assessment, debugging, documentation, deployment, training — these are the real tasks.</p>
+    <p>The role of AI here is ambivalent:
+        It relieves repetitive tasks.
+        But it creates new control and review needs.
+        And it can — if used incorrectly — even increase risks.</p>
+    <p>Still, for me, the positives clearly outweigh the negatives:
+        Claude Code makes me more efficient.
+        I get visible results faster.
+        And: It’s fun working with it.</p>
+
+    <h2>Outlook</h2>
+    <p>I am curious how the development process will evolve — especially when the project:
+        - Integrates CI/CD
+        - Moves functional components into production
+        - Completes the implementation of security requirements</p>
+    <p>“The AI takes care of the annoying tasks — but unfortunately, new annoying tasks come up."
+        Still: I would do it again — with Claude by my side.
+        But not without a review. Not without responsibility. And not without developers.</p>
+</article>
+</body>
+</html>
