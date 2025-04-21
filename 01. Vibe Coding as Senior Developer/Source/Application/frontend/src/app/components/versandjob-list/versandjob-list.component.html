@@ -1,0 +1,54 @@
+<div class="versandjobs-page">
+  <app-header></app-header>
+  
+  <main class="versandjobs-content deka-container">
+    <section class="page-header">
+      <h1>Meine Versandjobs</h1>
+      <a routerLink="/versandjob/neu" class="deka-btn deka-btn-primary create-btn">
+        <span class="icon-plus">+</span> Neuen Versandjob anlegen
+      </a>
+    </section>
+    
+    <section class="versandjobs-list">
+      <div class="deka-card">
+        <div class="deka-card-body">
+          <table class="deka-table versandjobs-table">
+            <thead>
+              <tr>
+                <th>Veranstaltung</th>
+                <th>Zeitraum</th>
+                <th>Veranstaltungsort</th>
+                <th>Status</th>
+                <th>Erstellt am</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let job of versandjobs">
+                <td>{{ job.veranstaltung.name }}</td>
+                <td>{{ formatDate(job.veranstaltung.von) }} - {{ formatDate(job.veranstaltung.bis) }}</td>
+                <td>{{ job.veranstaltung.plz }} {{ job.veranstaltung.ort }}</td>
+                <td>
+                  <span class="status-badge" [ngClass]="getStatusClass(job.status)">
+                    {{ job.status }}
+                  </span>
+                </td>
+                <td>{{ formatDate(job.erstelltAm) }}</td>
+                <td>
+                  <a [routerLink]="['/versandjob', job.id]" class="deka-btn deka-btn-secondary action-btn">
+                    Details
+                  </a>
+                </td>
+              </tr>
+              <tr *ngIf="versandjobs.length === 0">
+                <td colspan="6" class="no-jobs-message">
+                  Keine Versandjobs vorhanden. Erstellen Sie einen neuen Versandjob.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

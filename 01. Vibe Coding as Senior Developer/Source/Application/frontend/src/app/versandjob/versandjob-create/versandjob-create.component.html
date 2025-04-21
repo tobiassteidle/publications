@@ -1,0 +1,181 @@
+<div class="versandjob-create-container">
+  <app-header></app-header>
+  
+  <div class="content-container">
+    <div class="page-header">
+      <h1>Neuen Versandjob erstellen</h1>
+      <a routerLink="/versandjobs" class="btn-secondary">Zurück zur Übersicht</a>
+    </div>
+    
+    <div class="form-container">
+      <form [formGroup]="versandjobForm" (ngSubmit)="onSubmit()">
+        <!-- Allgemeine Informationen -->
+        <div class="form-section">
+          <h2>Allgemeine Informationen</h2>
+          
+          <div class="form-group">
+            <label for="titel">Titel *</label>
+            <input 
+              type="text" 
+              id="titel" 
+              formControlName="titel" 
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['titel'].errors }" />
+            <div *ngIf="submitted && f['titel'].errors" class="invalid-feedback">
+              <div *ngIf="f['titel'].errors['required']">Titel ist erforderlich</div>
+              <div *ngIf="f['titel'].errors['maxlength']">Titel darf maximal 100 Zeichen lang sein</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="beschreibung">Beschreibung *</label>
+            <textarea 
+              id="beschreibung" 
+              formControlName="beschreibung" 
+              class="form-control" 
+              rows="3"
+              [ngClass]="{ 'is-invalid': submitted && f['beschreibung'].errors }"></textarea>
+            <div *ngIf="submitted && f['beschreibung'].errors" class="invalid-feedback">
+              <div *ngIf="f['beschreibung'].errors['required']">Beschreibung ist erforderlich</div>
+              <div *ngIf="f['beschreibung'].errors['maxlength']">Beschreibung darf maximal 500 Zeichen lang sein</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Empfänger-Informationen -->
+        <div class="form-section">
+          <h2>Empfänger-Informationen</h2>
+          
+          <div class="form-group">
+            <label for="empfaengerName">Name *</label>
+            <input 
+              type="text" 
+              id="empfaengerName" 
+              formControlName="empfaengerName" 
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['empfaengerName'].errors }" />
+            <div *ngIf="submitted && f['empfaengerName'].errors" class="invalid-feedback">
+              <div *ngIf="f['empfaengerName'].errors['required']">Name ist erforderlich</div>
+              <div *ngIf="f['empfaengerName'].errors['maxlength']">Name darf maximal 100 Zeichen lang sein</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="empfaengerAdresse">Adresse *</label>
+            <textarea 
+              id="empfaengerAdresse" 
+              formControlName="empfaengerAdresse" 
+              class="form-control" 
+              rows="2"
+              [ngClass]="{ 'is-invalid': submitted && f['empfaengerAdresse'].errors }"></textarea>
+            <div *ngIf="submitted && f['empfaengerAdresse'].errors" class="invalid-feedback">
+              <div *ngIf="f['empfaengerAdresse'].errors['required']">Adresse ist erforderlich</div>
+              <div *ngIf="f['empfaengerAdresse'].errors['maxlength']">Adresse darf maximal 200 Zeichen lang sein</div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="empfaengerEmail">E-Mail *</label>
+              <input 
+                type="email" 
+                id="empfaengerEmail" 
+                formControlName="empfaengerEmail" 
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['empfaengerEmail'].errors }" />
+              <div *ngIf="submitted && f['empfaengerEmail'].errors" class="invalid-feedback">
+                <div *ngIf="f['empfaengerEmail'].errors['required']">E-Mail ist erforderlich</div>
+                <div *ngIf="f['empfaengerEmail'].errors['email']">Bitte geben Sie eine gültige E-Mail-Adresse ein</div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="empfaengerTelefon">Telefon</label>
+              <input 
+                type="tel" 
+                id="empfaengerTelefon" 
+                formControlName="empfaengerTelefon" 
+                class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f['empfaengerTelefon'].errors }" />
+              <div *ngIf="submitted && f['empfaengerTelefon'].errors" class="invalid-feedback">
+                <div *ngIf="f['empfaengerTelefon'].errors['pattern']">Bitte geben Sie eine gültige Telefonnummer ein</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Materialien -->
+        <div class="form-section">
+          <h2>Materialien</h2>
+          
+          <app-material-select (materialSelected)="onMaterialSelected($event)"></app-material-select>
+          
+          <div class="selected-materials">
+            <h3>Ausgewählte Materialien</h3>
+            
+            <div *ngIf="selectedMaterials.length === 0" class="no-materials">
+              <p>Keine Materialien ausgewählt. Bitte wählen Sie mindestens ein Material aus.</p>
+            </div>
+            
+            <ul *ngIf="selectedMaterials.length > 0" class="material-list">
+              <li *ngFor="let material of selectedMaterials" class="material-item">
+                <div class="material-info">
+                  <h4>{{ material.name }}</h4>
+                  <p>{{ material.beschreibung }}</p>
+                  <span class="material-details">Artikelnr.: {{ material.artikelnummer }} | Kategorie: {{ material.kategorie }}</span>
+                </div>
+                <button type="button" class="btn-remove" (click)="removeMaterial(material.id)">
+                  <span class="icon">×</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Zusätzliche Informationen -->
+        <div class="form-section">
+          <h2>Zusätzliche Informationen</h2>
+          
+          <div class="form-group">
+            <label for="versandtermin">Gewünschter Versandtermin *</label>
+            <input 
+              type="date" 
+              id="versandtermin" 
+              formControlName="versandtermin" 
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['versandtermin'].errors }" />
+            <div *ngIf="submitted && f['versandtermin'].errors" class="invalid-feedback">
+              <div *ngIf="f['versandtermin'].errors['required']">Versandtermin ist erforderlich</div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="notizen">Notizen</label>
+            <textarea 
+              id="notizen" 
+              formControlName="notizen" 
+              class="form-control" 
+              rows="3"
+              [ngClass]="{ 'is-invalid': submitted && f['notizen'].errors }"></textarea>
+            <div *ngIf="submitted && f['notizen'].errors" class="invalid-feedback">
+              <div *ngIf="f['notizen'].errors['maxlength']">Notizen dürfen maximal 500 Zeichen lang sein</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Error and Submit -->
+        <div class="form-actions">
+          <div *ngIf="error" class="error-message">{{ error }}</div>
+          
+          <div class="buttons">
+            <button type="button" class="btn-secondary" routerLink="/versandjobs">Abbrechen</button>
+            <button type="submit" class="btn-primary" [disabled]="loading">
+              <span *ngIf="loading" class="spinner"></span>
+              Versandjob erstellen
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

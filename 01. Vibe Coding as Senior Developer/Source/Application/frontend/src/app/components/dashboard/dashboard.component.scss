@@ -1,0 +1,280 @@
+.dashboard-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--deka-light-grey);
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 2rem 1rem;
+}
+
+/* Welcome Section */
+.dashboard-welcome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background-color: var(--deka-white);
+  padding: 2rem;
+  border-radius: var(--deka-radius);
+  box-shadow: var(--deka-shadow-sm);
+  
+  .welcome-text {
+    h1 {
+      margin-bottom: 0.5rem;
+      color: var(--deka-secondary);
+    }
+    
+    p {
+      color: var(--deka-dark-grey);
+      margin-bottom: 0;
+    }
+  }
+  
+  .welcome-actions {
+    .icon-plus {
+      font-weight: bold;
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+/* Stats Section */
+.dashboard-stats {
+  margin-bottom: 2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.stats-card {
+  padding: 1.5rem;
+  text-align: center;
+  background-color: var(--deka-white);
+  border: none;
+  
+  &:hover {
+    transform: translateY(-3px);
+    transition: transform 0.3s ease;
+  }
+  
+  .stats-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--deka-secondary);
+  }
+  
+  .stats-label {
+    font-size: 1rem;
+    color: var(--deka-dark-grey);
+  }
+}
+
+/* Status Colors */
+.status-open-text {
+  color: #2b7d9e; // Blue
+}
+
+.status-in-progress-text {
+  color: #d97706; // Orange
+}
+
+.status-shipped-text {
+  color: #059669; // Green
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.35em 0.65em;
+  font-size: 0.85em;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 50rem;
+}
+
+.status-open {
+  background-color: rgba(43, 125, 158, 0.15);
+  color: #2b7d9e;
+}
+
+.status-in-progress {
+  background-color: rgba(217, 119, 6, 0.15);
+  color: #d97706;
+}
+
+.status-shipped {
+  background-color: rgba(5, 150, 105, 0.15);
+  color: #059669;
+}
+
+/* Recent Jobs Section */
+.dashboard-recent {
+  margin-bottom: 2rem;
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    
+    h2 {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.recent-jobs-table {
+  width: 100%;
+  
+  .action-btn {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  .no-jobs-message {
+    text-align: center;
+    padding: 2rem;
+    color: var(--deka-dark-grey);
+  }
+}
+
+/* Info Section */
+.dashboard-info {
+  margin-bottom: 2rem;
+  background-color: var(--deka-white);
+  border: none;
+  
+  .deka-card-header {
+    background-color: var(--deka-primary);
+    color: var(--deka-white);
+    
+    h3 {
+      color: var(--deka-white);
+    }
+  }
+  
+  .info-contact {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+    
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .contact-label {
+      font-weight: 600;
+      color: var(--deka-secondary);
+      margin-bottom: 0.25rem;
+    }
+    
+    .contact-value {
+      color: var(--deka-dark-grey);
+    }
+  }
+}
+
+/* Footer */
+.deka-footer {
+  background-color: var(--deka-secondary);
+  color: var(--deka-white);
+  padding: 2rem 0;
+  margin-top: 2rem;
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .footer-logo {
+    img {
+      height: 30px;
+      width: auto;
+      filter: brightness(0) invert(1);
+      margin-bottom: 0.5rem;
+    }
+    
+    p {
+      margin-bottom: 0;
+      font-size: 0.875rem;
+      opacity: 0.8;
+    }
+  }
+  
+  .footer-links {
+    display: flex;
+    
+    a {
+      color: var(--deka-white);
+      margin-left: 1.5rem;
+      font-size: 0.875rem;
+      text-decoration: none;
+      opacity: 0.8;
+      transition: opacity 0.2s ease;
+      
+      &:hover {
+        opacity: 1;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .info-contact {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-welcome {
+    flex-direction: column;
+    align-items: flex-start;
+    
+    .welcome-text {
+      margin-bottom: 1rem;
+    }
+  }
+  
+  .deka-footer {
+    .footer-content {
+      flex-direction: column;
+      text-align: center;
+      
+      .footer-logo {
+        margin-bottom: 1rem;
+      }
+      
+      .footer-links {
+        flex-direction: column;
+        
+        a {
+          margin: 0.5rem 0;
+          margin-left: 0;
+        }
+      }
+    }
+  }
+  
+  .recent-jobs-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

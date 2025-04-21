@@ -1,0 +1,99 @@
+<div class="versandjob-detail-page">
+  <app-header></app-header>
+  
+  <main class="versandjob-detail-content deka-container">
+    <div class="page-header">
+      <h1>Versandjob Details</h1>
+      <button class="deka-btn deka-btn-secondary" (click)="goBack()">
+        Zurück zur Übersicht
+      </button>
+    </div>
+    
+    <div *ngIf="loading" class="loading-indicator">
+      <p>Daten werden geladen...</p>
+    </div>
+    
+    <div *ngIf="error" class="error-message">
+      <p>{{ error }}</p>
+      <button class="deka-btn deka-btn-primary" (click)="goBack()">Zurück zur Übersicht</button>
+    </div>
+    
+    <div *ngIf="!loading && !error && versandjob" class="versandjob-details">
+      <div class="deka-card">
+        <div class="deka-card-header">
+          <div class="versandjob-header">
+            <h2>Versandjob #{{ versandjob.id }}</h2>
+            <div class="status-badge" [ngClass]="getStatusClass(versandjob.status)">
+              {{ versandjob.status }}
+            </div>
+          </div>
+        </div>
+        
+        <div class="deka-card-body">
+          <div class="detail-section">
+            <h3>Veranstaltungsinformationen</h3>
+            <div class="detail-grid">
+              <div class="detail-item">
+                <span class="label">Veranstaltung:</span>
+                <span class="value">{{ versandjob.veranstaltung.name }}</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="label">Zeitraum:</span>
+                <span class="value">{{ versandjob.veranstaltung.von | date:'dd.MM.yyyy' }} bis {{ versandjob.veranstaltung.bis | date:'dd.MM.yyyy' }}</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="label">Adresse:</span>
+                <span class="value">
+                  {{ versandjob.veranstaltung.strasse }}<br>
+                  {{ versandjob.veranstaltung.plz }} {{ versandjob.veranstaltung.ort }}
+                </span>
+              </div>
+              
+              <div class="detail-item" *ngIf="versandjob.veranstaltung.beschreibung">
+                <span class="label">Zusätzliche Informationen:</span>
+                <span class="value">{{ versandjob.veranstaltung.beschreibung }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="detail-section">
+            <h3>Bestellte Materialien</h3>
+            <table class="deka-table material-table">
+              <thead>
+                <tr>
+                  <th>Artikelnr.</th>
+                  <th>Material</th>
+                  <th>Anzahl</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let material of versandjob.materialien">
+                  <td>{{ material.artikelnummer }}</td>
+                  <td>{{ material.name }}</td>
+                  <td>{{ material.mengeSelected }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="detail-section">
+            <h3>Zeitlicher Verlauf</h3>
+            <div class="detail-grid">
+              <div class="detail-item">
+                <span class="label">Erstellt am:</span>
+                <span class="value">{{ versandjob.erstelltAm | date:'dd.MM.yyyy HH:mm' }} Uhr</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="label">Zuletzt geändert:</span>
+                <span class="value">{{ versandjob.geaendertAm | date:'dd.MM.yyyy HH:mm' }} Uhr</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

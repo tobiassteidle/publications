@@ -1,0 +1,270 @@
+<div class="versandjob-page">
+  <app-header></app-header>
+  
+  <main class="versandjob-content deka-container">
+    <div class="page-header">
+      <h1>Neuen Versandjob erstellen</h1>
+      <div class="step-indicator">
+        <div class="step" [ngClass]="{'active': currentStep === 1, 'completed': currentStep > 1}">
+          <div class="step-number">1</div>
+          <div class="step-label">Veranstaltungsdaten</div>
+        </div>
+        <div class="step-divider"></div>
+        <div class="step" [ngClass]="{'active': currentStep === 2, 'completed': currentStep > 2}">
+          <div class="step-number">2</div>
+          <div class="step-label">Materialauswahl</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Schritt 1: Veranstaltungsdaten -->
+    <div class="step-content" *ngIf="currentStep === 1">
+      <div class="deka-card">
+        <div class="deka-card-header">
+          <h2>Veranstaltungsdaten</h2>
+        </div>
+        
+        <div class="deka-card-body">
+          <form [formGroup]="veranstaltungForm">
+            <div class="form-grid">
+              <div class="form-group wide">
+                <label for="name" class="deka-form-label">Veranstaltungsname *</label>
+                <input 
+                  type="text" 
+                  id="name" 
+                  formControlName="name" 
+                  class="deka-form-control"
+                  [ngClass]="{'is-invalid': veranstaltungForm.get('name')?.invalid && veranstaltungForm.get('name')?.touched}">
+                <div class="error-message" *ngIf="veranstaltungForm.get('name')?.invalid && veranstaltungForm.get('name')?.touched">
+                  Veranstaltungsname ist erforderlich
+                </div>
+              </div>
+              
+              <div class="form-group wide">
+                <label for="beschreibung" class="deka-form-label">Zusätzliche Informationen</label>
+                <textarea 
+                  id="beschreibung" 
+                  formControlName="beschreibung" 
+                  class="deka-form-control" 
+                  rows="3"></textarea>
+              </div>
+              
+              <div class="form-group date-field">
+                <label for="von" class="deka-form-label">Beginn *</label>
+                <input 
+                  type="date" 
+                  id="von" 
+                  formControlName="von" 
+                  class="deka-form-control"
+                  [ngClass]="{'is-invalid': veranstaltungForm.get('von')?.invalid && veranstaltungForm.get('von')?.touched}">
+                <div class="error-message" *ngIf="veranstaltungForm.get('von')?.invalid && veranstaltungForm.get('von')?.touched">
+                  Beginn ist erforderlich
+                </div>
+              </div>
+              
+              <div class="form-group date-field">
+                <label for="bis" class="deka-form-label">Ende *</label>
+                <input 
+                  type="date" 
+                  id="bis" 
+                  formControlName="bis" 
+                  class="deka-form-control"
+                  [ngClass]="{'is-invalid': veranstaltungForm.get('bis')?.invalid && veranstaltungForm.get('bis')?.touched}">
+                <div class="error-message" *ngIf="veranstaltungForm.get('bis')?.invalid && veranstaltungForm.get('bis')?.touched">
+                  <span *ngIf="veranstaltungForm.get('bis')?.errors?.['required']">
+                    Ende ist erforderlich
+                  </span>
+                  <span *ngIf="veranstaltungForm.get('bis')?.errors?.['dateRange']">
+                    Das Ende muss nach dem Beginn liegen
+                  </span>
+                </div>
+              </div>
+              
+              <div class="form-group wide">
+                <label for="strasse" class="deka-form-label">Straße und Hausnummer *</label>
+                <input 
+                  type="text" 
+                  id="strasse" 
+                  formControlName="strasse" 
+                  class="deka-form-control"
+                  [ngClass]="{'is-invalid': veranstaltungForm.get('strasse')?.invalid && veranstaltungForm.get('strasse')?.touched}">
+                <div class="error-message" *ngIf="veranstaltungForm.get('strasse')?.invalid && veranstaltungForm.get('strasse')?.touched">
+                  Straße und Hausnummer sind erforderlich
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="plz" class="deka-form-label">Postleitzahl / ZIP *</label>
+                <input 
+                  type="text" 
+                  id="plz" 
+                  formControlName="plz" 
+                  class="deka-form-control"
+                  [ngClass]="{'is-invalid': veranstaltungForm.get('plz')?.invalid && veranstaltungForm.get('plz')?.touched}">
+                <div class="error-message" *ngIf="veranstaltungForm.get('plz')?.invalid && veranstaltungForm.get('plz')?.touched">
+                  PLZ ist erforderlich
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="ort" class="deka-form-label">Ort *</label>
+                <input 
+                  type="text" 
+                  id="ort" 
+                  formControlName="ort" 
+                  class="deka-form-control"
+                  [ngClass]="{'is-invalid': veranstaltungForm.get('ort')?.invalid && veranstaltungForm.get('ort')?.touched}">
+                <div class="error-message" *ngIf="veranstaltungForm.get('ort')?.invalid && veranstaltungForm.get('ort')?.touched">
+                  Ort ist erforderlich
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+        <div class="deka-card-footer">
+          <div class="button-container">
+            <a routerLink="/dashboard" class="deka-btn deka-btn-secondary">Abbrechen</a>
+            <button class="deka-btn deka-btn-primary" (click)="nextStep()">Weiter zur Materialauswahl</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Schritt 2: Materialauswahl -->
+    <div class="step-content" *ngIf="currentStep === 2">
+      <div class="deka-card">
+        <div class="deka-card-header">
+          <h2>Materialauswahl</h2>
+        </div>
+        
+        <div class="deka-card-body">
+          <form [formGroup]="materialienForm">
+            <div class="search-container">
+              <input 
+                type="text" 
+                formControlName="search" 
+                class="deka-form-control search-input" 
+                placeholder="Suche nach Materialbezeichnung oder Artikelnummer...">
+            </div>
+          </form>
+          
+          <div class="material-list">
+            <table class="deka-table material-table">
+              <thead>
+                <tr>
+                  <th>Artikelnr.</th>
+                  <th>Material</th>
+                  <th>Abmessungen (cm)</th>
+                  <th>Verfügbar</th>
+                  <th>Aktionen</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let material of filteredMaterials">
+                  <td>{{ material.artikelnummer }}</td>
+                  <td>{{ material.name }}</td>
+                  <td>{{ material.laenge }} × {{ material.breite }} × {{ material.tiefe }}</td>
+                  <td>{{ material.mengeVerfuegbar }}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button class="deka-btn deka-btn-secondary" (click)="showDetails(material)">
+                        Details
+                      </button>
+                      <button class="deka-btn deka-btn-primary" (click)="addToCart(material)">
+                        <span class="icon-plus">+</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="filteredMaterials.length === 0">
+                  <td colspan="5" class="no-materials">
+                    <p>Keine Materialien gefunden.</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="deka-card-footer">
+          <div class="button-container">
+            <button class="deka-btn deka-btn-secondary" (click)="prevStep()">Zurück</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Material Details Modal -->
+    <div class="modal-overlay" *ngIf="detailMaterial" (click)="closeDetails()">
+      <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>{{ detailMaterial.name }}</h3>
+          <button class="close-button" (click)="closeDetails()">×</button>
+        </div>
+        <div class="modal-body">
+          <div class="material-details">
+            <div class="material-image" *ngIf="detailMaterial.bildBase64">
+              <img [src]="detailMaterial.bildBase64" [alt]="detailMaterial.name">
+            </div>
+            <div class="material-info">
+              <p><strong>Artikelnummer:</strong> {{ detailMaterial.artikelnummer }}</p>
+              <p><strong>Beschreibung:</strong> {{ detailMaterial.description }}</p>
+              <p><strong>Abmessungen:</strong> {{ detailMaterial.laenge }} × {{ detailMaterial.breite }} × {{ detailMaterial.tiefe }} cm</p>
+              <p><strong>Verfügbare Menge:</strong> {{ detailMaterial.mengeVerfuegbar }} von {{ detailMaterial.menge }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="deka-btn deka-btn-primary" (click)="closeDetails()">
+            Schließen
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Warenkorb -->
+    <div class="cart-panel" [ngClass]="{'open': isCartOpen}">
+      <div class="cart-header">
+        <h3>Warenkorb ({{ getTotalItems() }} Artikel)</h3>
+        <button class="close-button" (click)="toggleCart()">×</button>
+      </div>
+      <div class="cart-body">
+        <div class="empty-cart" *ngIf="selectedMaterials.length === 0">
+          <p>Ihr Warenkorb ist leer.</p>
+          <p>Bitte wählen Sie Materialien aus der Liste aus.</p>
+        </div>
+        <div class="cart-items" *ngIf="selectedMaterials.length > 0">
+          <div class="cart-item" *ngFor="let item of selectedMaterials">
+            <div class="item-info">
+              <div class="item-name">{{ item.name }}</div>
+              <div class="item-artikelnr">{{ item.artikelnummer }}</div>
+            </div>
+            <div class="item-actions">
+              <div class="item-quantity">
+                <button class="quantity-btn" (click)="updateQuantity(item.id, item.mengeSelected - 1)">-</button>
+                <span class="quantity-value">{{ item.mengeSelected }}</span>
+                <button class="quantity-btn" (click)="updateQuantity(item.id, item.mengeSelected + 1)" [disabled]="item.mengeSelected >= item.mengeVerfuegbar">+</button>
+              </div>
+              <button class="detail-btn" (click)="showDetails(item)">
+                <span class="icon-detail">i</span>
+              </button>
+              <button class="remove-btn" (click)="removeFromCart(item.id)">×</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cart-footer">
+        <button class="deka-btn deka-btn-primary" [disabled]="selectedMaterials.length === 0" (click)="submitVersandjob()">
+          Versandjob erstellen
+        </button>
+      </div>
+    </div>
+    
+    <!-- Warenkorb Toggle Button -->
+    <button class="cart-toggle" (click)="toggleCart()">
+      <span class="cart-icon">🛒</span>
+      <span class="cart-count" *ngIf="getTotalItems() > 0">{{ getTotalItems() }}</span>
+    </button>
+  </main>
+</div>
