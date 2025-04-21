@@ -1,0 +1,89 @@
+<div class="dashboard-container">
+  <app-header></app-header>
+  
+  <main class="dashboard-content">
+    <section class="welcome-section">
+      <h1>Willkommen bei Deka Versandjobs</h1>
+      <p>Hier können Sie Ihre Versandjobs verwalten und neue erstellen.</p>
+    </section>
+    
+    <section class="stats-section">
+      <h2>Übersicht</h2>
+      <div class="stat-cards">
+        <div class="stat-card">
+          <h3>Gesamt</h3>
+          <div class="stat-value">{{ versandjobStats.total }}</div>
+        </div>
+        <div class="stat-card">
+          <h3>Offen</h3>
+          <div class="stat-value">{{ versandjobStats.offen }}</div>
+        </div>
+        <div class="stat-card">
+          <h3>In Bearbeitung</h3>
+          <div class="stat-value">{{ versandjobStats.inBearbeitung }}</div>
+        </div>
+        <div class="stat-card">
+          <h3>Abgeschlossen</h3>
+          <div class="stat-value">{{ versandjobStats.abgeschlossen }}</div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="recent-section">
+      <div class="section-header">
+        <h2>Neueste Versandjobs</h2>
+        <a routerLink="/versandjobs" class="view-all">Alle anzeigen</a>
+      </div>
+      
+      <table class="recent-jobs-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Titel</th>
+            <th>Status</th>
+            <th>Erstellt am</th>
+            <th>Aktionen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let job of recentVersandjobs">
+            <td>{{ job.id }}</td>
+            <td>{{ job.titel }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="'status-' + job.status.toLowerCase()">
+                {{ job.status === 'OFFEN' ? 'Offen' : 
+                   job.status === 'IN_BEARBEITUNG' ? 'In Bearbeitung' : 
+                   job.status === 'ABGESCHLOSSEN' ? 'Abgeschlossen' : job.status }}
+              </span>
+            </td>
+            <td>{{ job.erstelltAm | date:'dd.MM.yyyy' }}</td>
+            <td>
+              <a [routerLink]="['/versandjobs', job.id]" class="action-btn">Details</a>
+            </td>
+          </tr>
+          <tr *ngIf="recentVersandjobs.length === 0">
+            <td colspan="5" class="no-data">
+              Keine Versandjobs vorhanden. <a routerLink="/versandjobs/neu">Erstellen Sie einen neuen Versandjob</a>.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    
+    <section class="quick-actions">
+      <h2>Schnellzugriff</h2>
+      <div class="action-buttons">
+        <a routerLink="/versandjobs/neu" class="action-card">
+          <div class="action-icon">+</div>
+          <h3>Neuer Versandjob</h3>
+          <p>Erstellen Sie einen neuen Versandjob</p>
+        </a>
+        <a routerLink="/versandjobs" class="action-card">
+          <div class="action-icon">≡</div>
+          <h3>Alle Versandjobs</h3>
+          <p>Übersicht aller Versandjobs</p>
+        </a>
+      </div>
+    </section>
+  </main>
+</div>

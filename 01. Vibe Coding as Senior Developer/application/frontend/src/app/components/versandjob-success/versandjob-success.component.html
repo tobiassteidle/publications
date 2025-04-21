@@ -1,0 +1,23 @@
+<div class="success-page">
+  <app-header></app-header>
+  
+  <main class="success-content deka-container">
+    <div class="deka-card success-card">
+      <div class="success-icon">
+        <span>✓</span>
+      </div>
+      
+      <h1>Versandjob erfolgreich erstellt!</h1>
+      
+      <div class="success-message">
+        <p>Ihr Versandjob mit der Nummer <strong>{{ versandjobId }}</strong> wurde erfolgreich angelegt.</p>
+        <p>Sie können den Status Ihres Versandjobs jederzeit in der Übersicht "Meine Versandjobs" einsehen.</p>
+      </div>
+      
+      <div class="action-buttons">
+        <a routerLink="/versandjobs" class="deka-btn deka-btn-secondary">Zu meinen Versandjobs</a>
+        <a routerLink="/dashboard" class="deka-btn deka-btn-primary">Zurück zum Dashboard</a>
+      </div>
+    </div>
+  </main>
+</div>

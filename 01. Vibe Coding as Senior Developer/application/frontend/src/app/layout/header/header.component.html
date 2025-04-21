@@ -1,0 +1,19 @@
+<header class="app-header">
+  <div class="app-header-logo">
+    <img src="assets/logo.png" alt="Deka Logo" class="logo-img" />
+    <span class="app-title">Versandjobs</span>
+  </div>
+  
+  <nav class="app-nav">
+    <ul>
+      <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
+      <li><a routerLink="/versandjobs" routerLinkActive="active">Meine Versandjobs</a></li>
+      <li><a routerLink="/versandjobs/neu" routerLinkActive="active">Neuer Versandjob</a></li>
+    </ul>
+  </nav>
+  
+  <div class="user-menu">
+    <span class="user-name">{{ userName }}</span>
+    <button (click)="logout()" class="logout-btn">Abmelden</button>
+  </div>
+</header>
